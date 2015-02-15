@@ -15,7 +15,8 @@ import java.util.logging.SimpleFormatter;
  */
 public class Utils {
 
-  public static Properties initProperties(String propertyFile) {
+  public static Properties initProperties(String propertyFile) 
+  {
     Properties properties = new Properties();
     try (InputStream is = new FileInputStream(propertyFile)) {
       properties.load(is);
@@ -25,8 +26,8 @@ public class Utils {
     }
     return properties;
   }
-
-  public static void setLogFile(String logFile, String className) {
+  public static void setLogFile(String logFile, String className) 
+  {
     try {
       Logger logger = Logger.getLogger(className);
       FileHandler fileTxt = new FileHandler(logFile);
@@ -37,20 +38,20 @@ public class Utils {
       Logger.getLogger(className).log(Level.SEVERE, null, ex);
     }
   }
-
   /**
    * Call this to delete the ".lck" file
    *
    * @param logger
    */
-  public static void closeLogger(String logger) {
+  public static void closeLogger(String logger) 
+  {
     for (Handler h : Logger.getLogger(logger).getHandlers()) {
       System.out.println("Closing logger");
       h.close();
     }
   }
-
-  public static Logger getLogger(String logFile, String className) {
+  public static Logger getLogger(String logFile, String className) 
+  {
     Logger logger;
     try {
       logger = Logger.getLogger(className);
@@ -64,5 +65,4 @@ public class Utils {
     }
     return logger;
   }
-
 }

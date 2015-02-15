@@ -62,17 +62,14 @@ public class EchoClient extends Thread implements EchoListener
         Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-  
-    public void registerEchoListener(EchoListener l)
+  public void registerEchoListener(EchoListener l)
   {
       listeners.add(l); 
   }
-  
   public void unRegisterEchoListener(EchoListener l)
   {
       listeners.remove(l);
   }
-  
   public void notifyListeners(String msg)  //ændret fra private til public pga. test.
   {
       for (EchoListener listener : listeners) 
@@ -81,17 +78,16 @@ public class EchoClient extends Thread implements EchoListener
           System.out.println("#####TEST af notifyListeners#####");
       }
   }
-    @Override
-    public void messageArrived(String data)
-    {
+  @Override
+  public void messageArrived(String data)
+  {
         System.out.println(data);
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    public String testMethod(String msg)
-    {
+  }
+  public String testMethod(String msg)
+  {
         return msg;
-    }
-  
+  }
   public static void main(String[] args)
   {   
     int port = 9090;

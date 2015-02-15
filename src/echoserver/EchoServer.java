@@ -20,11 +20,12 @@ public class EchoServer {
   private static final Properties properties = Utils.initProperties("server.properties");
  
 
-  public static void stopServer() {
+  public static void stopServer() 
+  {
     keepRunning = false;
   }
-
-  private static void handleClient(Socket socket) throws IOException {
+  private static void handleClient(Socket socket) throws IOException 
+  {
     Scanner input = new Scanner(socket.getInputStream());
     PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
@@ -39,7 +40,6 @@ public class EchoServer {
     socket.close();
     Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Closed a Connection");
   }
-  
   private void runServer()
   {
     int port = Integer.parseInt(properties.getProperty("port"));
@@ -59,9 +59,8 @@ public class EchoServer {
       Logger.getLogger(EchoServer.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-
-  public static void main(String[] args) {
-    new EchoServer().runServer();
-    
+  public static void main(String[] args) 
+  {
+    new EchoServer().runServer(); 
   }
 }
