@@ -11,7 +11,7 @@ import echoclient.EchoListener;
 /**
  * @author MASA
  */
-public class EchoClientGui extends javax.swing.JFrame implements EchoListener{
+public class EchoClientGui extends javax.swing.JFrame  implements EchoListener{
 EchoClient client = new EchoClient();
     /**
      * Creates new form EchoClientGui
