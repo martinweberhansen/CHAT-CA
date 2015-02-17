@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.ProtocolStrings;
-import gui.EchoClientGui;
 
 public class EchoClient extends Thread implements EchoListener 
 {
@@ -30,23 +29,15 @@ public class EchoClient extends Thread implements EchoListener
     input = new Scanner(socket.getInputStream());
     output = new PrintWriter(socket.getOutputStream(), true);  //Set to true, to get auto flush behaviour
     start();
-  }
-  
+  } 
   public void send(String msg)
   {
     output.println(msg);
   }
-  
-// @Override
-//  public void stop() throws IOException
-//  {
-//    output.println(ProtocolStrings.STOP);
-//  }
-  
   @Override
-  public void start()
+  public void run()
   {
-      System.out.println("start client");
+      System.out.println("client started..");
     String msg = input.nextLine();
     while (!msg.equals(ProtocolStrings.STOP)) 
     {
@@ -75,20 +66,20 @@ public class EchoClient extends Thread implements EchoListener
       for (EchoListener listener : listeners) 
       {
           listener.messageArrived(msg);
-          System.out.println("#####TEST af notifyListeners#####");
       }
   }
   @Override
   public void messageArrived(String data)
   {
-        System.out.println(data);
+        output.print(data);
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
   public String testMethod(String msg)
   {
         return msg;
   }
-  public static void main(String[] args)
+  
+  public void EchoClient(String[] args)
   {   
     int port = 9090;
     String ip = "localhost";
@@ -102,8 +93,8 @@ public class EchoClient extends Thread implements EchoListener
       EchoClient client = new EchoClient();      
       client.registerEchoListener(client);
       client.connect(ip, port); 
-      client.unRegisterEchoListener(client);
-      //client.stop();      
+      
+      client.unRegisterEchoListener(client);      
           
     }  
     catch (UnknownHostException ex) {

@@ -13,7 +13,7 @@ import shared.ProtocolStrings;
 import utils.Utils;
 
 
-public class EchoServer {
+public class EchoServer extends Thread{
 
   private static boolean keepRunning = true;
   private static ServerSocket serverSocket;
@@ -28,7 +28,7 @@ public class EchoServer {
   {
     Scanner input = new Scanner(socket.getInputStream());
     PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-
+    
     String message = input.nextLine(); //IMPORTANT blocking call
     Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ",message));
     while (!message.equals(ProtocolStrings.STOP)) {
