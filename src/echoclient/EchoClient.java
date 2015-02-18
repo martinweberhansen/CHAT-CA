@@ -1,6 +1,7 @@
 package echoclient;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -21,6 +22,18 @@ public class EchoClient extends Thread implements EchoListener
   private PrintWriter output;
   List<EchoListener> listeners = new ArrayList<>();
  
+   public  EchoClient(String ip, int port)
+  { 
+      try 
+      {
+          connect(ip,port);
+      }  
+    catch (UnknownHostException ex) {
+      Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (IOException ex) {
+      Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
   public void connect(String address, int port) throws UnknownHostException, IOException
   {
     this.port = port;
@@ -55,7 +68,7 @@ public class EchoClient extends Thread implements EchoListener
   }
   public void registerEchoListener(EchoListener l)
   {
-      listeners.add(l); 
+      listeners.add(l);
   }
   public void unRegisterEchoListener(EchoListener l)
   {
@@ -78,31 +91,4 @@ public class EchoClient extends Thread implements EchoListener
   {
         return msg;
   }
-  
-  public void EchoClient(String[] args)
-  {   
-    int port = 9090;
-    String ip = "localhost";
-    if(args.length == 2)
-    {
-      port = Integer.parseInt(args[0]);
-      ip = args[1];
-    }
-    try {
-      
-      EchoClient client = new EchoClient();      
-      client.registerEchoListener(client);
-      client.connect(ip, port); 
-      
-      client.unRegisterEchoListener(client);      
-          
-    }  
-    catch (UnknownHostException ex) {
-      Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IOException ex) {
-      Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  }
-  
-
 }
