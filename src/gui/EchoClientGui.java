@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import echoclient.EchoClient;
@@ -11,9 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-/**
- * @author MASA
- */
 public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener
 {
     EchoClient client;
@@ -27,6 +19,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     public EchoClientGui()
     {
         initComponents();
+        jTextFieldMessage.addActionListener(this);
     }
 
     /**
@@ -55,8 +48,10 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         jButtonMessageSend = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaChat = new javax.swing.JTextArea();
+        jComboBox1 = new javax.swing.JComboBox();
 
         jDialogNewConnection.setTitle("New Connection");
+        jDialogNewConnection.setMinimumSize(new java.awt.Dimension(405, 325));
         jDialogNewConnection.setResizable(false);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 300));
@@ -139,11 +134,6 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         jPanel1.add(jButtonLoginLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         jTextFieldMessage.setPreferredSize(new java.awt.Dimension(420, 30));
-        jTextFieldMessage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldMessageActionPerformed(evt);
-            }
-        });
         jPanel1.add(jTextFieldMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, -1, -1));
 
         jButtonMessageSend.setText("Send");
@@ -169,6 +159,10 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Commands" }));
+        jComboBox1.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,12 +181,8 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMessageActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldMessageActionPerformed
-
     private void jButtonMessageSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMessageSendActionPerformed
-        // TODO add your handling code here:
+        sendMessage();
     }//GEN-LAST:event_jButtonMessageSendActionPerformed
 
     private void jButtonLoginLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginLogoutActionPerformed
@@ -203,7 +193,6 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
             // Change global variables and text on login/logout-button
             online = false;
             jButtonLoginLogout.setText("Login");
-            jTextFieldMessage.removeActionListener(this);
         } else
         {
             jDialogNewConnection.setVisible(true);
@@ -247,7 +236,6 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
 //            {
 //                online = true;
 //                jButtonLoginLogout.setText("Logout");
-//                jTextFieldMessage.addActionListener(this);
 //                jDialogNewConnection.setVisible(false);
 //            } else
 //            {
@@ -295,6 +283,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLoginLogout;
     private javax.swing.JButton jButtonMessageSend;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDialog jDialogNewConnection;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -323,15 +312,16 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         
     }
     
-    private void sendMessage(ActionEvent e)
+    private void sendMessage()
     {
         String msg = jTextFieldMessage.getText();
+        jTextFieldMessage.setText("");
         System.out.println("Written message: " + msg);
     }
     
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sendMessage();
     }
 }
