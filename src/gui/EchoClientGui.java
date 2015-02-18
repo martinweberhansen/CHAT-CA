@@ -7,6 +7,8 @@ package gui;
 
 import echoclient.EchoClient;
 import echoclient.EchoListener;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * @author MASA
@@ -14,6 +16,7 @@ import echoclient.EchoListener;
 public class EchoClientGui extends javax.swing.JFrame implements EchoListener
 {
     EchoClient client;
+    ArrayList<String> chatHistory = new ArrayList<>();
     
     private boolean online = false;
     
@@ -44,6 +47,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
         newConnectionCancel = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         newConnectionUserName = new javax.swing.JTextField();
+        newConnectionInfoMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButtonLoginLogout = new javax.swing.JButton();
         jTextFieldMessage = new javax.swing.JTextField();
@@ -55,20 +59,25 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
         jDialogNewConnection.setResizable(false);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 300));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         newConnectionServerAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         newConnectionServerAddress.setText("localhost");
         newConnectionServerAddress.setPreferredSize(new java.awt.Dimension(220, 30));
+        jPanel2.add(newConnectionServerAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, -1, -1));
 
         jLabel1.setText("Serveraddress:");
         jLabel1.setPreferredSize(new java.awt.Dimension(120, 30));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         jLabel2.setText("Port:");
         jLabel2.setPreferredSize(new java.awt.Dimension(80, 30));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
 
         newConnectionPort.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         newConnectionPort.setText("9090");
         newConnectionPort.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel2.add(newConnectionPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, -1, -1));
 
         newConnectionConnect.setText("Connect");
         newConnectionConnect.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -77,6 +86,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
                 newConnectionConnectActionPerformed(evt);
             }
         });
+        jPanel2.add(newConnectionConnect, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, -1, -1));
 
         newConnectionCancel.setText("Cancel");
         newConnectionCancel.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -85,63 +95,19 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
                 newConnectionCancelActionPerformed(evt);
             }
         });
+        jPanel2.add(newConnectionCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, -1, -1));
 
         jLabel3.setText("Username:");
         jLabel3.setPreferredSize(new java.awt.Dimension(120, 30));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
         newConnectionUserName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         newConnectionUserName.setPreferredSize(new java.awt.Dimension(220, 30));
+        jPanel2.add(newConnectionUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, -1, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(newConnectionCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(newConnectionConnect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
-                                .addComponent(newConnectionUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(20, 20, 20)
-                                    .addComponent(newConnectionServerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(20, 20, 20)
-                                    .addComponent(newConnectionPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newConnectionUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newConnectionServerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newConnectionPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(newConnectionConnect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newConnectionCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
-        );
+        newConnectionInfoMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        newConnectionInfoMessage.setPreferredSize(new java.awt.Dimension(360, 25));
+        jPanel2.add(newConnectionInfoMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
         javax.swing.GroupLayout jDialogNewConnectionLayout = new javax.swing.GroupLayout(jDialogNewConnection.getContentPane());
         jDialogNewConnection.getContentPane().setLayout(jDialogNewConnectionLayout);
@@ -229,7 +195,18 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
     }//GEN-LAST:event_jButtonMessageSendActionPerformed
 
     private void jButtonLoginLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginLogoutActionPerformed
-        // TODO add your handling code here:
+        if(online)
+        {
+            // Disconnect - close connection to server
+            client.stop();
+            // Change global variables and text on login/logout-button
+            online = false;
+            jButtonLoginLogout.setText("Login");
+        } else
+        {
+            jDialogNewConnection.setVisible(true);
+            jDialogNewConnection.setLocationRelativeTo(jTextAreaChat);
+        }
     }//GEN-LAST:event_jButtonLoginLogoutActionPerformed
 
     private void newConnectionCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newConnectionCancelActionPerformed
@@ -244,6 +221,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
         
         if(userName.equalsIgnoreCase(""))
         {
+            newConnectionInfoMessage.setText("Please enter a username");
         } else
         {
             if (serverAddress.equalsIgnoreCase(""))
@@ -261,9 +239,18 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
             // Connect to server with the entered date for username, serveraddress and port
             client = new EchoClient(serverAddress, port);
             
-            // 
-            
-            jDialogNewConnection.setVisible(false);
+            // Test if client have connected to server.
+            // If connected, close jDialog and enable chat-function
+//            if(client.connect(serverAddress, port))
+//            {
+//                online = true;
+//                jButtonLoginLogout.setText("Logout");
+//                jDialogNewConnection.setVisible(false);
+//            } else
+//            {
+//                online = false;
+//                newConnectionInfoMessage.setText("Could not connect...");
+//            }
         }
     }//GEN-LAST:event_newConnectionConnectActionPerformed
 
@@ -316,6 +303,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
     private javax.swing.JTextField jTextFieldMessage;
     private javax.swing.JButton newConnectionCancel;
     private javax.swing.JButton newConnectionConnect;
+    private javax.swing.JLabel newConnectionInfoMessage;
     private javax.swing.JTextField newConnectionPort;
     private javax.swing.JTextField newConnectionServerAddress;
     private javax.swing.JTextField newConnectionUserName;
@@ -327,5 +315,8 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
+    private void updateChat(String msg)
+    {
+        
+    }
 }
