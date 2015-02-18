@@ -7,13 +7,14 @@ package gui;
 
 import echoclient.EchoClient;
 import echoclient.EchoListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
  * @author MASA
  */
-public class EchoClientGui extends javax.swing.JFrame implements EchoListener
+public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener
 {
     EchoClient client;
     ArrayList<String> chatHistory = new ArrayList<>();
@@ -202,6 +203,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
             // Change global variables and text on login/logout-button
             online = false;
             jButtonLoginLogout.setText("Login");
+            jTextFieldMessage.removeActionListener(this);
         } else
         {
             jDialogNewConnection.setVisible(true);
@@ -245,6 +247,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
 //            {
 //                online = true;
 //                jButtonLoginLogout.setText("Logout");
+//                jTextFieldMessage.addActionListener(this);
 //                jDialogNewConnection.setVisible(false);
 //            } else
 //            {
@@ -308,7 +311,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
     private javax.swing.JTextField newConnectionServerAddress;
     private javax.swing.JTextField newConnectionUserName;
     // End of variables declaration//GEN-END:variables
-
+    
     @Override
     public void messageArrived(String data)
     {
@@ -318,5 +321,17 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener
     private void updateChat(String msg)
     {
         
+    }
+    
+    private void sendMessage(ActionEvent e)
+    {
+        String msg = jTextFieldMessage.getText();
+        System.out.println("Written message: " + msg);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
