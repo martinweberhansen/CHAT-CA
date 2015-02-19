@@ -4,6 +4,7 @@ import echoclient.EchoClient;
 import echoclient.EchoListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -209,13 +210,17 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
 
     private void newConnectionConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newConnectionConnectActionPerformed
         String userName = newConnectionUserName.getText().trim();
+//        userName = userName.replaceAll(",", "");
         String serverAddress = newConnectionServerAddress.getText().trim();
         String portNumber = newConnectionPort.getText().trim();
         int port = 9090;
         
         if(userName.equalsIgnoreCase(""))
         {
-            newConnectionInfoMessage.setText("Please enter a username");
+            newConnectionInfoMessage.setText("Please enter a username...");
+        } else if(userName.contains(","))
+        {
+            newConnectionInfoMessage.setText("No \",\" (commas) allowed in username...");
         } else
         {
             if (serverAddress.equalsIgnoreCase(""))
@@ -227,18 +232,25 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
                 port = Integer.parseInt(portNumber);
             } catch (Exception en)
             {
+                newConnectionInfoMessage.setText("Wrong port...");
                 return;
             }
             
             try {
                 // Connect to server with the entered date for username, serveraddress and port
                 client = new EchoClient(serverAddress, port, userName);
+                client.connect(serverAddress, port, userName);
                 
                 // If connected, (No exceptions thrown...) close jDialog and enable chat-function
                 online = true;
                 jButtonLoginLogout.setText("Logout");
                 jDialogNewConnection.setVisible(false);
             } catch (UnknownHostException ex)
+            {
+                Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
+                online = false;
+                newConnectionInfoMessage.setText("Could not create client...");
+            } catch (IOException ex)
             {
                 Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
                 online = false;

@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -42,7 +43,7 @@ public class EchoClient extends Thread implements EchoListener, Observer
 //        }
     }
     
-    public void connect(String address, int port) throws UnknownHostException, IOException
+    public void connect(String address, int port, String userName) throws UnknownHostException, IOException
     {
         this.port = port;
         serverAddress = InetAddress.getByName(address);
@@ -86,7 +87,7 @@ public class EchoClient extends Thread implements EchoListener, Observer
         listeners.remove(l);
     }
     
-    public void notifyListeners(String msg) //ændret fra private til public pga. test.
+    private void notifyListeners(String msg)
     {
         for (EchoListener listener : listeners)
         {
@@ -98,11 +99,10 @@ public class EchoClient extends Thread implements EchoListener, Observer
     public void messageArrived(String data)
     {
         output.print(data);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public String testMethod(String msg)
-    {
-        return msg;
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

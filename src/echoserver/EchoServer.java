@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.nashorn.internal.parser.TokenType;
 import shared.ProtocolStrings;
 import utils.Utils;
 
@@ -18,6 +19,7 @@ public class EchoServer
     private static boolean keepRunning = true;
     private static ServerSocket serverSocket;
     private static final Properties properties = Utils.initProperties("server.properties");
+    ArrayList<String> userList = new ArrayList<>();
     ArrayList<ClientHandler> clientList = new ArrayList<>();
     
     public static void stopServer()
@@ -71,18 +73,72 @@ public class EchoServer
         public void run()
         {
             String messageLine = input.nextLine();
+            String splitter = "[#]";
+            String[] tokens = messageLine.split(splitter);
+            String command = tokens[0].toUpperCase();
+            String user;
             
+            if(tokens.length < 2)
+            {
+                closeConnection();
+                return;
+            }
             
+            if(command.equalsIgnoreCase("CONNECT"))
+            {
+                user = tokens[1];
+                userList.add(user);
+                
+                String allUsers = userList.get(0);
+                for(int i = 1; i < userList.size(); i++)
+                {
+                     allUsers = allUsers + "," + userList.get(i);
+                }
+                writer.println("ONLINE#" + allUsers);
+            } else
+            {
+                closeConnection();
+                return;
+            }
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            boolean continueClient = true;
+            while (continueClient)
+            {
+                messageLine = input.nextLine();
+                splitter = "[#]";
+                tokens = messageLine.split(splitter);
+                command = tokens[0].toUpperCase();
+                switch (command)
+                {
+                    case "CONNECT":
+                        // Send MESSAGE-command to all clients that this client has connected
+                        // Send ONLINE-command to all clients with the updated clientList
+                        
+                        break;
+                    case "SEND":
+                        // Send MESSAGE-command to all clients or as a personal message, to the specified client:
+                        
+                        break;
+                    case "CLOSE":
+                        // Remove this client from clientList.
+                        // Send MESSAGE-command too all clients that this client has disconnected
+                        // Send ONLINE-command to all clients with the udated clientList
+                        // Lastly, close this connection (and thread)
+                        
+                        removeClient(this, user);
+                        writer.println("CLOSE#");
+                        closeConnection();
+                        continueClient = false;
+                        
+                        writer.println("MESSAGE#*#" + user + " disconnected.");
+                        String listOfUsers = getUserList();
+                        writer.println("ONLINE#" + listOfUsers);
+                        break;
+                    default:
+                        removeClient(this, user);
+                        closeConnection();
+                }
+            }
             
             String message = input.nextLine(); //IMPORTANT blocking call
             Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ", message));
@@ -93,8 +149,52 @@ public class EchoServer
                 message = input.nextLine(); //IMPORTANT blocking call
             }
             writer.println(ProtocolStrings.STOP);//Echo the stop message back to the client for a nice closedown
-            socket.close();
+//            socket.close();
             Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Closed a Connection");
         }
+        
+        private void sendMessage()
+        {
+            
+        }
+        
+        private void messageToAll(String msg)
+        {
+            
+        }
+        
+        private void messageToPersons(String msg, String allPersons)
+        {
+            String splitter = "[,]";
+            String[] tokens = allPersons.split(splitter);
+            
+            for()
+        }
+        
+        private void closeConnection()
+        {
+            input.close();
+            writer.close();
+        }
+        
+        private void removeClient(ClientHandler ch, String user)
+        {
+            clientList.remove(ch);
+            userList.remove(user);
+        }
+        
+        private String getUserList()
+        {
+            String allUsers = userList.get(0);
+            for (int i = 1; i < userList.size(); i++)
+            {
+                allUsers = allUsers + "," + userList.get(i);
+            }
+            return allUsers;
+        }
     }
+    
+    
+    
+    
 }
