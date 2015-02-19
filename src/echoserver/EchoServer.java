@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 import utils.Utils;
 
 public class EchoServer
@@ -62,7 +61,6 @@ public class EchoServer
             userList.put(user, ch);
             return true;
         }
-        
     }
     
     public void removeClient(String user, ClientHandler ch)
@@ -100,6 +98,22 @@ public class EchoServer
         {
             Map.Entry mapEntry = (Map.Entry) iterator.next();
             returnList.add((ClientHandler) mapEntry.getValue());
+        }
+        return returnList;
+    }
+    
+    public ArrayList<ClientHandler> getClientsFromUserNames(ArrayList<String> userNames)
+    {
+        ArrayList<ClientHandler> returnList = new ArrayList<>();
+        Iterator iterator = userList.entrySet().iterator();
+        while (iterator.hasNext())
+        {
+            Map.Entry mapEntry = (Map.Entry) iterator.next();
+            String user = mapEntry.getKey().toString();
+            if(userNames.contains(user))
+            {
+                returnList.add((ClientHandler) mapEntry.getValue());
+            }
         }
         return returnList;
     }
