@@ -8,32 +8,38 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.ProtocolStrings;
 
-public class EchoClient extends Thread implements EchoListener
+public class EchoClient extends Thread implements EchoListener, Observer
 {
     Socket socket;
     private int port;
+    private String username;
     private InetAddress serverAddress;
     private Scanner input;
     private PrintWriter output;
     List<EchoListener> listeners = new ArrayList<>();
     
-    public EchoClient(String ip, int port)
+    public EchoClient(String ip, int port, String userName) throws UnknownHostException
     {
-        try
-        {
-            connect(ip, port);
-        } catch (UnknownHostException ex)
-        {
-            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.serverAddress = InetAddress.getByName(ip);
+        this.port = port;
+        this.username = userName;
+        
+//        try
+//        {
+//            connect(ip, port);
+//        } catch (UnknownHostException ex)
+//        {
+//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex)
+//        {
+//            Logger.getLogger(EchoClient.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     public void connect(String address, int port) throws UnknownHostException, IOException

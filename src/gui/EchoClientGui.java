@@ -4,7 +4,10 @@ import echoclient.EchoClient;
 import echoclient.EchoListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener
 {
@@ -227,21 +230,20 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
                 return;
             }
             
-            // Connect to server with the entered date for username, serveraddress and port
-            client = new EchoClient(serverAddress, port);
-            
-            // Test if client have connected to server.
-            // If connected, close jDialog and enable chat-function
-//            if(client.connect(serverAddress, port))
-//            {
-//                online = true;
-//                jButtonLoginLogout.setText("Logout");
-//                jDialogNewConnection.setVisible(false);
-//            } else
-//            {
-//                online = false;
-//                newConnectionInfoMessage.setText("Could not connect...");
-//            }
+            try {
+                // Connect to server with the entered date for username, serveraddress and port
+                client = new EchoClient(serverAddress, port, userName);
+                
+                // If connected, (No exceptions thrown...) close jDialog and enable chat-function
+                online = true;
+                jButtonLoginLogout.setText("Logout");
+                jDialogNewConnection.setVisible(false);
+            } catch (UnknownHostException ex)
+            {
+                Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
+                online = false;
+                newConnectionInfoMessage.setText("Could not connect...");
+            }
         }
     }//GEN-LAST:event_newConnectionConnectActionPerformed
 
