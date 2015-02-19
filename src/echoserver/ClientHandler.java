@@ -76,15 +76,12 @@ public class ClientHandler extends Thread
                     
                     removeClient(this, userName);
                     sendMessage("CLOSE#");
-                    messageToAll(2, userName, ("User " + userName + " disconnected."));
-                    
                     closeConnection();
                     continueClient = false;
-                    
-                    sendOnlineMessage();
                     break;
                 default:
                     removeClient(this, userName);
+                    sendMessage("CLOSE#");
                     closeConnection();
                     continueClient = false;
                     break;
@@ -160,6 +157,8 @@ public class ClientHandler extends Thread
     
     private void removeClient(ClientHandler ch, String user)
     {
+        messageToAll(2, userName, ("User " + userName + " disconnected."));
+        sendOnlineMessage();
         es.removeClient(user, ch);
     }
 }
