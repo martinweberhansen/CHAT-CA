@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 import utils.Utils;
 
 public class EchoServer
@@ -62,7 +61,6 @@ public class EchoServer
             userList.put(user, ch);
             return true;
         }
-        
     }
     
     public void removeClient(String user, ClientHandler ch)
