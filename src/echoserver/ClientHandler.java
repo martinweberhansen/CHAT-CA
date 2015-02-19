@@ -127,7 +127,7 @@ public class ClientHandler extends Thread
         }
     }
     
-    private void messageToPersons(String user, String msg, String allPersons)
+    private void messageToPersons(String user, String allPersons, String msg)
     {
         String splitter = "[,]";
         String[] tokens = allPersons.split(splitter);
