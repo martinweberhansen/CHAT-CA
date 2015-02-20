@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.ProtocolStrings;
 
-public class EchoClient extends Thread implements EchoListener, Observer
+public class EchoClient extends Thread implements EchoListener
 {
     Socket socket;
     private int port;
@@ -77,14 +77,14 @@ public class EchoClient extends Thread implements EchoListener, Observer
         }
     }
     
-    public void registerEchoListener(EchoListener l)
+    public void registerEchoListener(EchoListener el)
     {
-        listeners.add(l);
+        listeners.add(el);
     }
     
-    public void unRegisterEchoListener(EchoListener l)
+    public void unRegisterEchoListener(EchoListener el)
     {
-        listeners.remove(l);
+        listeners.remove(el);
     }
     
     private void notifyListeners(String msg)
@@ -98,10 +98,6 @@ public class EchoClient extends Thread implements EchoListener, Observer
     @Override
     public void messageArrived(String data)
     {
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Received String:   " + data);
     }
 }

@@ -7,15 +7,20 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener, Observer
 {
     EchoClient client;
-    ArrayList<String> chatHistory = new ArrayList<>();
+    private ArrayList<String> chatHistory = new ArrayList<>();
+    private ArrayList<String> userList = new ArrayList<>();
+    private Comparator<? super UserListComparator> UserListComparator;
     
     private boolean online = false;
     
@@ -203,6 +208,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
             // Change global variables and text on login/logout-button
             online = false;
             jButtonLoginLogout.setText("Login");
+            disconnect();
         } else
         {
             jDialogNewConnection.setVisible(true);
@@ -226,7 +232,10 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
             newConnectionInfoMessage.setText("Please enter a username...");
         } else if(userName.contains(","))
         {
-            newConnectionInfoMessage.setText("No \",\" (commas) allowed in username...");
+            newConnectionInfoMessage.setText("No commas (,) allowed in username...");
+        } else if(userName.contains("#"))
+        {
+            newConnectionInfoMessage.setText("No hashtags (#) allowed in username...");
         } else
         {
             if (serverAddress.equalsIgnoreCase(""))
@@ -244,22 +253,21 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
             
             try {
                 // Connect to server with the entered date for username, serveraddress and port
-                client = new EchoClient(serverAddress, port, userName);
                 client.connect(serverAddress, port, userName);
+                client = new EchoClient("localhost", 9090, "Anonomous");
                 
                 // If connected, (No exceptions thrown...) close jDialog and enable chat-function
-                online = true;
-                jButtonLoginLogout.setText("Logout");
+                connect();
                 jDialogNewConnection.setVisible(false);
             } catch (UnknownHostException ex)
             {
                 Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
-                online = false;
+                disconnect();
                 newConnectionInfoMessage.setText("Could not create client...");
             } catch (IOException ex)
             {
                 Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
-                online = false;
+                disconnect();
                 newConnectionInfoMessage.setText("Could not connect...");
             }
         }
@@ -325,17 +333,17 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     @Override
     public void messageArrived(String data)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
     private void updateChat(String msg)
     {
-        
+        jTextAreaChat.append("/n" + msg);
     }
     
-    private void updateUsers(String msg)
+    private void updateUserList(DefaultListModel<String> userlist)
     {
-        
+        jListUsers.setModel(userlist);
     }
     
     private void sendMessage()
@@ -350,10 +358,24 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     {
         sendMessage();
     }
-
+    
     @Override
     public void update(Observable o, Object arg)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void connect()
+    {
+        client.registerEchoListener(this);
+        online = true;
+        jButtonLoginLogout.setText("Logout");
+    }
+    
+    private void disconnect()
+    {
+        client.unRegisterEchoListener(this);
+        online = false;
+        jButtonLoginLogout.setText("Login");
     }
 }
