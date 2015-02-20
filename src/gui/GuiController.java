@@ -62,7 +62,6 @@ public class GuiController implements EchoListener
         String sendMSG;
         if(users.size() > 0)
         {
-            
             String usersToString = users.get(0);
             for(int i = 1; i < users.size(); i++)
             {

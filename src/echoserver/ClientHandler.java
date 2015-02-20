@@ -118,7 +118,7 @@ public class ClientHandler extends Thread
             case 2: // MESSAGE-command
                 for(ClientHandler ch : clients)
                 {
-                    ch.sendMessage("MESSAGE#*#" + msg);
+                    ch.sendMessage("MESSAGE#" + user + "#" + msg);
                 }
                 break;
         }
@@ -134,6 +134,7 @@ public class ClientHandler extends Thread
         {
             usersList.add(tokens[i]);
         }
+        usersList.add(user);
         
         ArrayList<ClientHandler> clientsOnline = es.getClientsFromUserNames(usersList);
         

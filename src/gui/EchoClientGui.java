@@ -1,10 +1,12 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ListSelectionModel;
 
 public class EchoClientGui extends javax.swing.JFrame implements ActionListener
 {
@@ -51,6 +53,7 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jTextAreaChat = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListUsers = new javax.swing.JList();
+        jToggleButtonSelectUsers = new javax.swing.JToggleButton();
 
         jDialogNewConnection.setTitle("New Connection");
         jDialogNewConnection.setMinimumSize(new java.awt.Dimension(405, 325));
@@ -137,7 +140,7 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jTextFieldMessage.setPreferredSize(new java.awt.Dimension(490, 30));
         jPanel1.add(jTextFieldMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, -1, -1));
 
-        jButtonMessageSend.setText("Send");
+        jButtonMessageSend.setText("Send message");
         jButtonMessageSend.setPreferredSize(new java.awt.Dimension(150, 30));
         jButtonMessageSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,12 +164,21 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(150, 460));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(150, 425));
 
         jListUsers.setPreferredSize(new java.awt.Dimension(150, 450));
         jScrollPane2.setViewportView(jListUsers);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 70, -1, -1));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 105, -1, -1));
+
+        jToggleButtonSelectUsers.setText("Select receivers:");
+        jToggleButtonSelectUsers.setPreferredSize(new java.awt.Dimension(150, 30));
+        jToggleButtonSelectUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonSelectUsersActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jToggleButtonSelectUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,6 +263,22 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         }
     }//GEN-LAST:event_newConnectionConnectActionPerformed
 
+    private void jToggleButtonSelectUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonSelectUsersActionPerformed
+        if(jToggleButtonSelectUsers.isSelected())
+        {
+            jListUsers.setSelectedIndex(-1);
+            jListUsers.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            jListUsers.setSelectionForeground(Color.WHITE);
+            jListUsers.setSelectionBackground(Color.LIGHT_GRAY);
+        } else
+        {
+            jListUsers.setSelectedIndex(-1);
+            jListUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            jListUsers.setSelectionForeground(Color.BLACK);
+            jListUsers.setSelectionBackground(Color.WHITE);
+        }
+    }//GEN-LAST:event_jToggleButtonSelectUsersActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -300,6 +328,7 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaChat;
     private javax.swing.JTextField jTextFieldMessage;
+    private javax.swing.JToggleButton jToggleButtonSelectUsers;
     private javax.swing.JButton newConnectionCancel;
     private javax.swing.JButton newConnectionConnect;
     private javax.swing.JLabel newConnectionInfoMessage;
@@ -330,9 +359,11 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jTextFieldMessage.setText("");
         
         // Find selected users to send a personal message
-        
         List<String> users = new ArrayList<>();
-        users = jListUsers.getSelectedValuesList();
+        if(jToggleButtonSelectUsers.isSelected())
+        {
+            users = jListUsers.getSelectedValuesList();
+        }
         
         con.sendMessage(msg, users);
     }
@@ -347,6 +378,10 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     {
         online = true;
         jButtonLoginLogout.setText("Logout");
+        jListUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jToggleButtonSelectUsers.setSelected(false);
+        jListUsers.setSelectionForeground(Color.BLACK);
+        jListUsers.setSelectionBackground(Color.WHITE);
     }
     
     private void disconnect()
