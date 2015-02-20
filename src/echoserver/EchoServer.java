@@ -66,6 +66,7 @@ public class EchoServer
     public void removeClient(String user, ClientHandler ch)
     {
         userList.remove(user, ch);
+        Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, "Removed client");
     }
     
     public String getUsersOnlineString()
@@ -81,12 +82,14 @@ public class EchoServer
         String returnString = "";
         if(list.size() > 0)
         {
+            System.out.println("EchoServer - getUsersOnlineString list.size(): " + list.size());
             returnString = list.get(0);
             for(int i = 1; i < list.size(); i++)
             {
                 returnString = list.get(i);
             }
         }
+        System.out.println("EchoServer - getUsersOnlineString: " + returnString);
         return returnString;
     }
     

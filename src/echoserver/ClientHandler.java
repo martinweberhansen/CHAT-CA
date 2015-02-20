@@ -69,11 +69,6 @@ public class ClientHandler extends Thread
                     }
                     break;
                 case "CLOSE":
-                    // Remove this client from clientList.
-                    // Send MESSAGE-command too all clients that this client has disconnected
-                    // Send ONLINE-command to all clients with the udated clientList
-                    // Lastly, close this connection (and thread)
-                    
                     removeClient(this, userName);
                     sendMessage("CLOSE#");
                     continueClient = false;
@@ -157,8 +152,8 @@ public class ClientHandler extends Thread
     
     private void removeClient(ClientHandler ch, String user)
     {
-        messageToAll(2, userName, (userName + " disconnected."));
         es.removeClient(user, ch);
+        messageToAll(2, userName, (userName + " disconnected."));
         sendOnlineMessage();
     }
 }

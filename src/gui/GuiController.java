@@ -22,6 +22,8 @@ public class GuiController implements EchoListener
 {
     EchoClient client;
     EchoClientGui echoGUI;
+    // Azure-ip:   137.117.216.126
+    // Port:       8080
     
     public GuiController(EchoClientGui ecg)
     {
@@ -48,7 +50,7 @@ public class GuiController implements EchoListener
     {
         client.unRegisterEchoListener(this);
         client.send("CLOSE#");
-        updateChat("", "Disconnected.");
+        updateChat("", "--- Disconnected ---");
     }
     
     @Override
@@ -86,6 +88,7 @@ public class GuiController implements EchoListener
         {
             case "ONLINE":
                 String users = "";
+                System.out.println("GuiController - handleMessage: " + tokens[1]);
                 try
                 {
                     users = tokens[1];

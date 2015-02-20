@@ -127,7 +127,10 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                closeOperation(evt);
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -290,9 +293,13 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         }
     }//GEN-LAST:event_jToggleButtonSelectUsersActionPerformed
 
-    private void closeOperation(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeOperation
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         con.disconnect();
-    }//GEN-LAST:event_closeOperation
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        con.disconnect();
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
