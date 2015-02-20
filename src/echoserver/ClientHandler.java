@@ -76,17 +76,16 @@ public class ClientHandler extends Thread
                     
                     removeClient(this, userName);
                     sendMessage("CLOSE#");
-                    closeConnection();
                     continueClient = false;
                     break;
                 default:
                     removeClient(this, userName);
                     sendMessage("CLOSE#");
-                    closeConnection();
                     continueClient = false;
                     break;
             }
         }
+        closeConnection();
 //        String message = input.nextLine(); //IMPORTANT blocking call
 //        Logger.getLogger(EchoServer.class.getName()).log(Level.INFO, String.format("Received the message: %1$S ", message));
 //        while (!message.equals(ProtocolStrings.STOP))
@@ -158,8 +157,8 @@ public class ClientHandler extends Thread
     
     private void removeClient(ClientHandler ch, String user)
     {
-        messageToAll(2, userName, ("User " + userName + " disconnected."));
-        sendOnlineMessage();
+        messageToAll(2, userName, (userName + " disconnected."));
         es.removeClient(user, ch);
+        sendOnlineMessage();
     }
 }

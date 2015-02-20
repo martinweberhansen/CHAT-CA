@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.text.DefaultCaret;
 
 public class EchoClientGui extends javax.swing.JFrame implements ActionListener
 {
@@ -124,6 +125,11 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(605, 625));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                closeOperation(evt);
+            }
+        });
 
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 600));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -152,6 +158,7 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setToolTipText("Chat");
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setAutoscrolls(true);
         jScrollPane1.setPreferredSize(new java.awt.Dimension(490, 460));
 
         jTextAreaChat.setEditable(false);
@@ -160,7 +167,6 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jTextAreaChat.setLineWrap(true);
         jTextAreaChat.setRows(5);
         jTextAreaChat.setWrapStyleWord(true);
-        jTextAreaChat.setPreferredSize(new java.awt.Dimension(490, 450));
         jScrollPane1.setViewportView(jTextAreaChat);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
@@ -200,7 +206,11 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonMessageSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMessageSendActionPerformed
-        sendMessage();
+        String text = jTextFieldMessage.getText();
+        if(!text.equalsIgnoreCase(""))
+        {
+            sendMessage();
+        }
     }//GEN-LAST:event_jButtonMessageSendActionPerformed
 
     private void jButtonLoginLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginLogoutActionPerformed
@@ -280,6 +290,10 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         }
     }//GEN-LAST:event_jToggleButtonSelectUsersActionPerformed
 
+    private void closeOperation(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeOperation
+        con.disconnect();
+    }//GEN-LAST:event_closeOperation
+
     /**
      * @param args the command line arguments
      */
@@ -340,7 +354,9 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     
     public void updateChat(String msg)
     {
+        jTextAreaChat.setRows(jTextAreaChat.getRows()+1);
         jTextAreaChat.append(msg + "\n");
+        jTextAreaChat.setCaretPosition(jTextAreaChat.getDocument().getLength());
     }
     
     public void updateUserList(DefaultListModel<String> userlist)
@@ -356,7 +372,8 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     
     private void sendMessage()
     {
-        String msg = jTextFieldMessage.getText();
+        String text = jTextFieldMessage.getText();
+        String msg = text.trim();
         jTextFieldMessage.setText("");
         
         // Find selected users to send a personal message
@@ -383,6 +400,8 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jToggleButtonSelectUsers.setSelected(false);
         jListUsers.setSelectionForeground(Color.BLACK);
         jListUsers.setSelectionBackground(Color.WHITE);
+        DefaultCaret caret = (DefaultCaret)jTextAreaChat.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
     
     private void disconnect()
