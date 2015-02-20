@@ -98,6 +98,6 @@ public class EchoClient extends Thread implements EchoListener
     @Override
     public void messageArrived(String data)
     {
-        System.out.println("Received String:   " + data);
+        notifyListeners(data);
     }
 }

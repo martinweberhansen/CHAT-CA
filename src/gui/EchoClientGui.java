@@ -1,26 +1,16 @@
 package gui;
 
-import echoclient.EchoClient;
-import echoclient.EchoListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
-public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener, Observer
+public class EchoClientGui extends javax.swing.JFrame implements ActionListener
 {
-    EchoClient client;
+    GuiController con = new GuiController(this);
     private ArrayList<String> chatHistory = new ArrayList<>();
     private ArrayList<String> userList = new ArrayList<>();
-    private Comparator<? super UserListComparator> UserListComparator;
     
     private boolean online = false;
     
@@ -204,10 +194,7 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         if(online)
         {
             // Disconnect - close connection to server
-            client.stop();
-            // Change global variables and text on login/logout-button
-            online = false;
-            jButtonLoginLogout.setText("Login");
+            con.disconnect();
             disconnect();
         } else
         {
@@ -251,24 +238,15 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
                 return;
             }
             
-            try {
-                // Connect to server with the entered date for username, serveraddress and port
-                client.connect(serverAddress, port, userName);
-                client = new EchoClient("localhost", 9090, "Anonomous");
-                
-                // If connected, (No exceptions thrown...) close jDialog and enable chat-function
+            jTextAreaChat.setText("");
+            if(con.connect(serverAddress, port, userName))
+            {
                 connect();
                 jDialogNewConnection.setVisible(false);
-            } catch (UnknownHostException ex)
+            } else
             {
-                Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
                 disconnect();
-                newConnectionInfoMessage.setText("Could not create client...");
-            } catch (IOException ex)
-            {
-                Logger.getLogger(EchoClientGui.class.getName()).log(Level.SEVERE, null, ex);
-                disconnect();
-                newConnectionInfoMessage.setText("Could not connect...");
+                newConnectionInfoMessage.setText("Could not connect to server...");
             }
         }
     }//GEN-LAST:event_newConnectionConnectActionPerformed
@@ -330,27 +308,33 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     private javax.swing.JTextField newConnectionUserName;
     // End of variables declaration//GEN-END:variables
     
-    @Override
-    public void messageArrived(String data)
+    public void updateChat(String msg)
     {
-        
+        jTextAreaChat.append(msg);
     }
     
-    private void updateChat(String msg)
-    {
-        jTextAreaChat.append("/n" + msg);
-    }
-    
-    private void updateUserList(DefaultListModel<String> userlist)
+    public void updateUserList(DefaultListModel<String> userlist)
     {
         jListUsers.setModel(userlist);
+    }
+    
+    private void clearUserList()
+    {
+        DefaultListModel<String> users = new DefaultListModel<>();
+        jListUsers.setModel(users);
     }
     
     private void sendMessage()
     {
         String msg = jTextFieldMessage.getText();
         jTextFieldMessage.setText("");
-        System.out.println("Written message: " + msg);
+        
+        // Find selected users to send a personal message
+        
+        List<String> users = new ArrayList<>();
+        users = jListUsers.getSelectedValuesList();
+        
+        con.sendMessage(msg, users);
     }
     
     @Override
@@ -359,22 +343,15 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         sendMessage();
     }
     
-    @Override
-    public void update(Observable o, Object arg)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     private void connect()
     {
-        client.registerEchoListener(this);
         online = true;
         jButtonLoginLogout.setText("Logout");
     }
     
     private void disconnect()
     {
-        client.unRegisterEchoListener(this);
+        clearUserList();
         online = false;
         jButtonLoginLogout.setText("Login");
     }
