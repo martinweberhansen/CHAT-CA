@@ -98,7 +98,6 @@ public class EchoClient extends Thread implements EchoListener, Observer
     @Override
     public void messageArrived(String data)
     {
-        output.print(data);
     }
 
     @Override

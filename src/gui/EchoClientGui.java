@@ -7,10 +7,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener
+public class EchoClientGui extends javax.swing.JFrame implements EchoListener, ActionListener, Observer
 {
     EchoClient client;
     ArrayList<String> chatHistory = new ArrayList<>();
@@ -52,7 +54,8 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         jButtonMessageSend = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaChat = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jListUsers = new javax.swing.JList();
 
         jDialogNewConnection.setTitle("New Connection");
         jDialogNewConnection.setMinimumSize(new java.awt.Dimension(405, 325));
@@ -122,10 +125,9 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(605, 625));
-        setPreferredSize(new java.awt.Dimension(600, 600));
         setResizable(false);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 600));
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 600));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButtonLoginLogout.setText("Login");
@@ -137,35 +139,39 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         });
         jPanel1.add(jButtonLoginLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jTextFieldMessage.setPreferredSize(new java.awt.Dimension(420, 30));
+        jTextFieldMessage.setPreferredSize(new java.awt.Dimension(490, 30));
         jPanel1.add(jTextFieldMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, -1, -1));
 
         jButtonMessageSend.setText("Send");
-        jButtonMessageSend.setPreferredSize(new java.awt.Dimension(120, 30));
+        jButtonMessageSend.setPreferredSize(new java.awt.Dimension(150, 30));
         jButtonMessageSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMessageSendActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonMessageSend, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 550, -1, -1));
+        jPanel1.add(jButtonMessageSend, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 550, -1, -1));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setToolTipText("Chat");
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(560, 460));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(490, 460));
 
         jTextAreaChat.setEditable(false);
         jTextAreaChat.setColumns(20);
         jTextAreaChat.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextAreaChat.setRows(5);
         jTextAreaChat.setWrapStyleWord(true);
+        jTextAreaChat.setPreferredSize(new java.awt.Dimension(490, 450));
         jScrollPane1.setViewportView(jTextAreaChat);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Commands" }));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(150, 460));
+
+        jListUsers.setPreferredSize(new java.awt.Dimension(150, 450));
+        jScrollPane2.setViewportView(jListUsers);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -297,14 +303,15 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLoginLogout;
     private javax.swing.JButton jButtonMessageSend;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDialog jDialogNewConnection;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JList jListUsers;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaChat;
     private javax.swing.JTextField jTextFieldMessage;
     private javax.swing.JButton newConnectionCancel;
@@ -326,6 +333,11 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
         
     }
     
+    private void updateUsers(String msg)
+    {
+        
+    }
+    
     private void sendMessage()
     {
         String msg = jTextFieldMessage.getText();
@@ -337,5 +349,11 @@ public class EchoClientGui extends javax.swing.JFrame implements EchoListener, A
     public void actionPerformed(ActionEvent e)
     {
         sendMessage();
+    }
+
+    @Override
+    public void update(Observable o, Object arg)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
