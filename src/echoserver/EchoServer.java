@@ -82,14 +82,12 @@ public class EchoServer
         String returnString = "";
         if(list.size() > 0)
         {
-            System.out.println("EchoServer - getUsersOnlineString list.size(): " + list.size());
             returnString = list.get(0);
             for(int i = 1; i < list.size(); i++)
             {
-                returnString = list.get(i);
+                returnString = returnString + "," + list.get(i);
             }
         }
-        System.out.println("EchoServer - getUsersOnlineString: " + returnString);
         return returnString;
     }
     
@@ -121,8 +119,8 @@ public class EchoServer
         return returnList;
     }
     
-    public static void main(String[] args)
-    {
-        new EchoServer().runServer();
-    }
+//    public static void main(String[] args)
+//    {
+//        new EchoServer().runServer();
+//    }
 }

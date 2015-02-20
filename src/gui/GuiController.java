@@ -74,7 +74,6 @@ public class GuiController implements EchoListener
         {
             sendMSG = "SEND#*#" + msg;
         }
-        System.out.println("Sending message to client/server:   " + sendMSG);
         client.send(sendMSG);
     }
     
@@ -88,7 +87,6 @@ public class GuiController implements EchoListener
         {
             case "ONLINE":
                 String users = "";
-                System.out.println("GuiController - handleMessage: " + tokens[1]);
                 try
                 {
                     users = tokens[1];
@@ -136,7 +134,6 @@ public class GuiController implements EchoListener
         String splitter = "[,]";
         String[] tokens = users.split(splitter);
         Arrays.sort(tokens);
-        System.out.println("Online users: " + tokens[0]);
         
         DefaultListModel userlist = new DefaultListModel();
         for(int i = 0; i < tokens.length; i++)

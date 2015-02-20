@@ -168,7 +168,6 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
         jTextAreaChat.setColumns(20);
         jTextAreaChat.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextAreaChat.setLineWrap(true);
-        jTextAreaChat.setRows(5);
         jTextAreaChat.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTextAreaChat);
 
@@ -298,7 +297,7 @@ public class EchoClientGui extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_formWindowClosing
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        con.disconnect();
+//        con.disconnect();
     }//GEN-LAST:event_formWindowClosed
 
     /**
