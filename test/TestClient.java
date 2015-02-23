@@ -36,15 +36,15 @@ public class TestClient {
   
   @Test
   public void send() throws IOException{
-    EchoClient client = new EchoClient();
+    EchoClient client = new EchoClient("ip", 0, "Username");
     client.registerEchoListener(client);
-    client.connect("localhost",9090);
+    client.connect("localhost",9090,"Username");
     client.start();
-    client.notifyListeners("Hello");
-    client.send("Hello");
+    client.messageArrived("MESSAGE#Username#Hello");
+    client.send("SEND#UserName#Hello");
     
     
     assertEquals("HELLO", client.testMethod("fjiwjf"));
-    //assertEquals("HELLO", client.receive());
+    assertEquals("HELLO", client.messageArrived("MESSAGE#Username#Hello"));
   }
 }
